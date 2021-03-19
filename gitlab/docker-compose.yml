@@ -23,8 +23,8 @@ services:
     environment:
       - GITLAB_ROOT_PASSWORD=C1sco12345
       - GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN=sandboxrunners
-      - GITLAB_HOST=http://MDENAPOL-M-70XB
-      - VIRTUAL_HOST=MDENAPOL-M-70XB
+      - GITLAB_HOST=http://student-vm
+      - VIRTUAL_HOST=student-vm
     # extra_hosts:
     #   devtools-gitlab: 10.10.20.50
   runner1:
@@ -34,17 +34,17 @@ services:
       - REGISTRATION_TOKEN=sandboxrunners
       - RUNNER_NAME=runner1
       - RUNNER_EXECUTOR=docker
-      - CI_SERVER_URL=http://MDENAPOL-M-70XB
-      - CLONE_URL=http://MDENAPOL-M-70XB
+      - CI_SERVER_URL=http://student-vm
+      - CLONE_URL=http://student-vm
       - REGISTER_NON_INTERACTIVE=true
       - DOCKER_IMAGE=alpine
-      - DOCKER_EXTRA_HOSTS=MDENAPOL-M-70XB:192.168.128.25
+      - DOCKER_EXTRA_HOSTS=student-vm:10.0.0.102
       - DOCKER_PULL_POLICY=if-not-present
     volumes:
       #- ./etc/runner:/etc/etc/gitlab-runnerc
       - /var/run/docker.sock:/var/run/docker.sock
     extra_hosts:
-      - "MDENAPOL-M-70XB:192.168.128.25"
+      - "student-vm:10.0.0.102"
 volumes:
   gitlab-config: 
     driver: local 

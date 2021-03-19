@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-gitlab_host="http://192.168.128.25"
+gitlab_host="http://10.0.0.102"
 gitlab_user="root"
 gitlab_password="C1sco12345"
 
