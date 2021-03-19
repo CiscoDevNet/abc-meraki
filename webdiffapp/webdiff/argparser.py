@@ -4,8 +4,6 @@ import os
 import re
 
 import dirdiff
-import githubdiff
-import github_fetcher
 from localfilediff import LocalFileDiff
 
 
