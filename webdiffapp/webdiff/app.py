@@ -35,7 +35,7 @@ import util
 import argparser
 
 VERSION = '0.15.0'
-dashboard = meraki.DashboardAPI("")
+dashboard = meraki.DashboardAPI()
 
 def determine_path():
     """Borrowed from wxglade.py"""
