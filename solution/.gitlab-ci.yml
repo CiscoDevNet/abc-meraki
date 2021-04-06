@@ -1,0 +1,35 @@
+stages:
+  - build
+  - test
+  - deploy
+image: python:3.8
+
+before_script:
+  - cd meraki-network-vlan-update
+  - pip install -r requirements.txt
+  - export MERAKI_DASHBOARD_API_KEY=<your api key>
+
+config:
+  stage: build
+  except:
+    - master
+  script:
+    - python check_meraki_config.py
+
+check_network_device_existence:
+  stage: test
+  needs:
+    - config
+  except:
+    - master
+  when: delayed
+  start_in: 30 seconds
+  script:
+    - python check_for_same_name_networks.py
+
+config_prod:
+  stage: deploy
+  only:
+    - master
+  script:
+    - python meraki_network_vlan_provision.py -c
