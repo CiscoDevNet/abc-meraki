@@ -9,7 +9,7 @@ services:
   influxdb:
     image: quay.io/influxdb/influxdb:v2.0.3
     volumes:
-      - ${PWD}/influxdbv2:/root/.influxdbv2
+      - ./influxdbv2:/root/.influxdbv2
     ports:
       - "8086:8086"
     networks:
@@ -27,9 +27,9 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ${PWD}/grafana-storage:/var/lib/grafana
-      - ${PWD}/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ${PWD}/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana-storage:/var/lib/grafana
+      - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./provisioning/datasources:/etc/grafana/provisioning/datasources
     user: "$UID:$GID"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
@@ -37,7 +37,7 @@ services:
     networks:
       - net_monitoring
   py_connector:
-    build: ${PWD}/py_connector/.
+    build: ./py_connector/.
     restart: on-failure
     environment:
       - PYTHONUNBUFFERED=0
