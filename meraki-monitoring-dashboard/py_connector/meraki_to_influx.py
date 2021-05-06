@@ -9,7 +9,7 @@ import influxdb_connect
 import time
 import meraki
 
-dashboard = meraki.DashboardAPI("0b027416ff938cfe91f02b3a33db35a55458035a")
+dashboard = meraki.DashboardAPI("")
 
 
 
