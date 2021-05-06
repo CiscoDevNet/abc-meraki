@@ -48,8 +48,7 @@ def get_switch_and_status_packets(start):
 											record=df,
 											data_frame_measurement_name=device_id)
 									else: 
-										print("write new point")
-										ts = pd.datetime.now()x
+										ts = pd.datetime.now()
 										influxdb_connect.write_api.write(
 											bucket=config.influx_bucket,
 											org=config.influx_org,

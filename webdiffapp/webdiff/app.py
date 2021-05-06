@@ -327,18 +327,20 @@ def get_meraki_configs():
 
 def diff_networks_vlan_settings(orgs):
     for org in orgs:
-        networks = dashboard.organizations.getOrganizationNetworks(org["id"])
+        if "ECMS" in org["name"]:
+            networks = dashboard.organizations.getOrganizationNetworks(org["id"])
 
-        for network in networks:
-            try:
-                settings = dashboard.appliance.getNetworkApplianceVlansSettings(network["id"])
+            for network in networks:
+                try:
+                    settings = dashboard.appliance.getNetworkApplianceVlansSettings(network["id"])
 
-                with open(f'meraki_settings/actual/vlan_settings/{network["name"]}vlan_settings.json', 'w') as outfile:
-                    json.dump(settings, outfile, indent=4)
-                
-                copy_gold_image_for_match('vlan_settings', f'{network["name"]}vlan_settings.json')
-            except Exception as e:
-                print("no appliance")
+                    with open(f'meraki_settings/actual/vlan_settings/{network["name"]}vlan_settings.json', 'w') as outfile:
+                        json.dump(settings, outfile, indent=4)
+                    
+                    copy_gold_image_for_match('vlan_settings', f'{network["name"]}vlan_settings.json')
+                except Exception as e:
+                    print("no appliance")
+
 
 def copy_gold_image_for_match(setting_fldr, file):
     src_dir = f'meraki_settings/gold/{setting_fldr}'
