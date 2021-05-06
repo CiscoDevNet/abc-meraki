@@ -9,7 +9,7 @@ import influxdb_connect
 import time
 import meraki
 
-dashboard = meraki.DashboardAPI("")
+dashboard = meraki.DashboardAPI("0b027416ff938cfe91f02b3a33db35a55458035a")
 
 
 
@@ -17,43 +17,50 @@ def get_switch_and_status_packets(start):
 	"""
 	Get all switch serials
 	"""
-	orgs = dashboard.organizations.getOrganizations()
-	for org in orgs:
-		networks = dashboard.organizations.getOrganizationNetworks(org["id"])
+	try: 
+		orgs = dashboard.organizations.getOrganizations()
+		for org in orgs:
+			if "Enterprise ECMS" in org["name"]:
+				networks = dashboard.organizations.getOrganizationNetworks(org["id"])
 
-		for network in networks:
-			devices=dashboard.networks.getNetworkDevices(network["id"])
+				for network in networks:
+					devices=dashboard.networks.getNetworkDevices(network["id"])
 
-			for device in devices:
-				if "MS" in device["model"]:
-					packet_readings = dashboard.switch.getDeviceSwitchPortsStatusesPackets(device["serial"],timespan=86400)
-					time.sleep(5)
-					for port in packet_readings:
-						device_id=device["serial"] + port["portId"] 
-						for packet in port["packets"]:
-							if start:
-								packet['ts'] = pd.datetime.now()
-								df = pd.DataFrame(packet)
-								df = df.rename(columns={"ts":"ts",
-									"value":"desc",
-									"value":"total"})
-								df = df.set_index("ts")
-								influxdb_connect.write_api.write(
-									bucket=config.influx_bucket,
-									org=config.influx_org,
-									record=df,
-									data_frame_measurement_name=device_id)
-							else: 
-								
-								ts = pd.datetime.now()
-								influxdb_connect.write_api.write(
-									bucket=config.influx_bucket,
-									org=config.influx_org,
-									record=influxdb_connect.Point(device_id)
-									.field("serial_port",device_id)
-									.field("packet_description",packet)
-									.time(ts))
-
+					for device in devices:
+						if "MS" in device["model"]:
+							packet_readings = dashboard.switch.getDeviceSwitchPortsStatusesPackets(device["serial"],timespan=10)
+							for port in packet_readings:
+								device_id=device["serial"] + port["portId"] 
+								for packet in port["packets"]:
+									device_id=device["serial"] + port["portId"] + packet['desc']
+									if start:
+										df_packet = {}
+										df_packet['switch'] = device["serial"]
+										df_packet['port'] = port["portId"]
+										df_packet['desc'] = packet['desc']
+										df_packet['total'] = packet['total']
+										df_packet['ts'] = pd.datetime.now()
+										df = pd.DataFrame(df_packet)
+										df = df.set_index("ts")
+										influxdb_connect.write_api.write(
+											bucket=config.influx_bucket,
+											org=config.influx_org,
+											record=df,
+											data_frame_measurement_name=device_id)
+									else: 
+										print("write new point")
+										ts = pd.datetime.now()x
+										influxdb_connect.write_api.write(
+											bucket=config.influx_bucket,
+											org=config.influx_org,
+											record=influxdb_connect.Point(device_id)
+											.field("switch",device["serial"])
+											.field("port",port["portId"])
+											.field("total",packet['total'])
+											.field("desc",packet['desc'])
+											.time(ts))
+	except Exception as e:
+		print(e)
 
 
 
@@ -70,5 +77,5 @@ def main():
 	orgs = dashboard.organizations.getOrganizations()
 	while True:
 		print("Polling now latest switch port data")
-		time.sleep(60) #poll every 10minutes
+		time.sleep(60) #poll every 1 minutes
 		get_switch_and_status_packets(False)

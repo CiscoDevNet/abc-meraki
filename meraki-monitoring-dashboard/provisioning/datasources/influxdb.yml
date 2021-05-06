@@ -1,0 +1,18 @@
+apiVersion: 1
+
+datasources:
+- orgId: 1
+  version: 2
+  name: InfluxDB_Docker
+  type: influxdb
+  access: proxy
+  url: http://influxdb:8086
+  basicAuth: true
+  isDefault: true
+  jsonData:
+    defaultBucket: meraki_bucket
+    httpMode: POST
+    organization: meraki_organization
+    version: Flux
+  secureJsonData:
+    token: meraki_token123
