@@ -316,7 +316,7 @@ Close the browser tab or hit Ctrl-C when you're done.
 '''
         % (HOSTNAME, PORT)
     )
-    Timer(0.1, open_browser).start()
+    #Timer(0.1, open_browser).start()
     app.run(host=HOSTNAME, port=PORT)
 
 
