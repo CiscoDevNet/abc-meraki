@@ -286,6 +286,8 @@ def is_webdiff_from_head():
 
 def run():
     global DIFF, PORT, HOSTNAME
+    get_meraki_configs()
+
     try:
         parsed_args = argparser.parse(sys.argv[1:], VERSION)
     except argparser.UsageError as e:
@@ -294,8 +296,6 @@ def run():
 
 
     DIFF = argparser.diff_for_args(parsed_args)
-
-    get_meraki_configs()
 
     if app.config['TESTING'] or app.config['DEBUG']:
         sys.stderr.write('Diff:\n%s' % DIFF)
