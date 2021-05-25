@@ -323,16 +323,16 @@ Close the browser tab or hit Ctrl-C when you're done.
 def get_meraki_configs():
     orgs = dashboard.organizations.getOrganizations()
     
-    diff_networks_vlan_settings(orgs)
+    <FIX THIS: function call that uses orgs variable above>
 
 def diff_networks_vlan_settings(orgs):
-    for org in orgs:
+    for org in <FIX THIS>:
         if "ECMS" in org["name"]:
-            networks = dashboard.organizations.getOrganizationNetworks(org["id"])
+            networks = <FIX THIS: meraki sdk call to get list of networks for specific org>
 
-            for network in networks:
+            for network in <FIX THIS>S:
                 try:
-                    settings = dashboard.appliance.getNetworkApplianceVlansSettings(network["id"])
+                    settings = <FIX THIS: meraki sdk call to get vlan enabled settings for a network>
 
                     with open(f'meraki_settings/actual/vlan_settings/{network["name"]}vlan_settings.json', 'w') as outfile:
                         json.dump(settings, outfile, indent=4)

@@ -1,0 +1,8 @@
+flask==0.10.1
+nose
+PyGithub==1.25.2
+pillow
+requests
+binaryornot
+black
+meraki

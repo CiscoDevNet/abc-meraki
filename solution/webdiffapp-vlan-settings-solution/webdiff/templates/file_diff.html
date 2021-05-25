@@ -1,0 +1,26 @@
+{%- extends "base.html" -%}
+
+{% block title %} Diff {% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div id="application"></div>
+
+<script>
+var pairs = {{pairs|tojson}};
+var initialIdx = {{idx|tojson}};
+var HAS_IMAGE_MAGICK = {{has_magick|tojson}};
+</script>
+
+<script src="/static/js/file_diff.js"></script>
+
+<script>
+window.addEventListener('beforeunload', function(e) {
+  $.post('/kill');
+});
+</script>
+
+{% endblock %}

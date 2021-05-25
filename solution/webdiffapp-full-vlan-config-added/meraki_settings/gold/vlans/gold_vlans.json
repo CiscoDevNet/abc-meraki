@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "networkId": "L_622059698530558738",
+        "name": "Default",
+        "applianceIp": "192.168.128.1",
+        "subnet": "192.168.128.0/24",
+        "fixedIpAssignments": {},
+        "reservedIpRanges": [],
+        "dnsNameservers": "upstream_dns",
+        "dhcpHandling": "Run a DHCP server",
+        "dhcpLeaseTime": "1 day",
+        "dhcpBootOptionsEnabled": false,
+        "dhcpOptions": []
+    },
+    {
+        "id": 2,
+        "networkId": "L_622059698530558738",
+        "name": "VLAN2",
+        "applianceIp": "192.168.2.1",
+        "subnet": "192.168.2.0/24",
+        "fixedIpAssignments": {},
+        "reservedIpRanges": [],
+        "dnsNameservers": "upstream_dns",
+        "dhcpHandling": "Run a DHCP server",
+        "dhcpLeaseTime": "1 day",
+        "dhcpBootOptionsEnabled": false,
+        "dhcpOptions": []
+    }
+]
