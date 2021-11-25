@@ -26,5 +26,5 @@ network_id = response["id"]
 info_message = f"New organization ID: {org_id}\nNew network ID: {network_id}"
 print(info_message)
 
-with open("./meraki_info.txt", "w") as file:
+with open("./id_info.txt", "w") as file:
     file.write(info_message)
