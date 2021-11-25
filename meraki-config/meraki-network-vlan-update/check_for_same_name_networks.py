@@ -30,7 +30,7 @@ class check_for_same_name_networks_test(unittest.TestCase):
 
 
 
-        self.assertTrue(len(found_networks) >= len(config)-1)
+        self.assertTrue(len(found_networks) >= len(config))
 
 if __name__ == '__main__':
     unittest.main()

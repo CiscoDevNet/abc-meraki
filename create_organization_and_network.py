@@ -10,8 +10,8 @@ it with pip if you don't yet have it in your system.
 
 import meraki
 
-ORG_NAME = "My Test Meraki Organization"
-NETWORK_NAME = "My Test Meraki Network"
+ORG_NAME = "My GitLab Meraki Organization"
+NETWORK_NAME = "My GitLab Meraki Network"
 PRODUCT_TYPES = ['appliance']
 
 api_key = input("Please enter your API key: ")
@@ -23,8 +23,8 @@ org_id = response["id"]
 response = dashboard.organizations.createOrganizationNetwork(org_id, NETWORK_NAME, PRODUCT_TYPES)
 network_id = response["id"]
 
-info_message = f"New organization ID: {org_id}\nNew network ID: {network_id}"
-print(info_message)
+print(f"The name of the new Network: {NETWORK_NAME}")
 
+info_message = f"New organization ID: {org_id}\nNew network ID: {network_id}"
 with open("./id_info.txt", "w") as file:
     file.write(info_message)

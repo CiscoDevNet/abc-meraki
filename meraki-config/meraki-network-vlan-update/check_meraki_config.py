@@ -14,10 +14,10 @@ class check_meraki_config_test(unittest.TestCase):
     def test_values_exist(self):
         configs = get_config()
 
-        for index, config in enumerate(configs):
+        for index, config in enumerate(configs, 1):
             if index > 0:
                 self.assertTrue(type(config["Network_Name"]) is str, f"Network {index} checks")
-                self.assertTrue(type(config["VLAN_subnet"]) is str and len(config["VLAN_subnet"]) == 7, f"subnet {index} checks")
+                self.assertTrue(type(config["VLAN_subnet"]) is str and len(config["VLAN_subnet"].split()) == 2, f"subnet {index} checks")
                 self.assertTrue(type(config["Number_VLANS"]) is str and len(config["Number_VLANS"]) > 0, f"Num vlan {index} checks")
             
 

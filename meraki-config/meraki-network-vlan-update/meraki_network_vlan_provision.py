@@ -36,14 +36,14 @@ def get_config():
 def find_network_and_assign_vlan():
     # Get the new network ID so we can add the devices
     orgs = dashboard.organizations.getOrganizations()
+    config = get_config()
 
     for org in orgs:  
-        network_actions=[]
         # Get the new network ID so we can add the devices
         networks = dashboard.organizations.getOrganizationNetworks(org["id"])
 
-        config = get_config()
         header = True
+        network_found = False
 
         for row in config:
             if header:
@@ -52,6 +52,7 @@ def find_network_and_assign_vlan():
 
             for network in networks:
                 if network["name"] == row["Network_Name"]:
+                    network_found = True
                     network = network["id"] 
                     if int(row["Number_VLANS"]) > 0:
                         dashboard.appliance.updateNetworkApplianceVlansSettings(network,vlansEnabled=True)
@@ -70,6 +71,9 @@ def find_network_and_assign_vlan():
 
                         batch = dashboard.organizations.createOrganizationActionBatch(org["id"],network_vlan_actions,confirmed=True,synchronous=False)
                         check_batch_completion(org["id"],batch["id"])
+            
+            if not network_found:
+                raise ValueError(f"No network with name {row['Network_Name']} found!")
 
 if __name__ == "__main__":
     find_network_and_assign_vlan()
