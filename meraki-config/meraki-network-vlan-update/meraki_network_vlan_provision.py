@@ -1,9 +1,3 @@
-import json
-import random
-import sys
-import os
-import getopt
-from action_batches import create_action_batch, check_until_completed
 from time import sleep
 import csv
 import meraki
@@ -15,13 +9,13 @@ def check_batch_completion(org,batch_id):
     while True:
         batch = dashboard.organizations.getOrganizationActionBatch(org,batch_id)
         if batch['status']['completed'] and not batch['status']['failed']:
-            print('Action batch ' +  batch_id +  ' completed!')
+            print(f'Action batch {batch_id} completed!')
             break
         elif batch['status']['failed']:
             print(batch)
             break
         else:
-            print('Action batch ' +  batch_id + 'processing... ' + str(99 - counter) + ' iterations')
+            print(f'Action batch {batch_id} processing... {str(99 - counter)} iterations')
             sleep(1)
         counter += 1
 
@@ -31,19 +25,17 @@ def get_config():
         config = list(config)
         print(config)
         return config
-        
 
 def find_network_and_assign_vlan():
-    # Get the new network ID so we can add the devices
+    # Get the new network ID so we can add the vlans
     orgs = dashboard.organizations.getOrganizations()
     config = get_config()
-
-    for org in orgs:  
-        # Get the new network ID so we can add the devices
+    #Tracking whether the network has been configured
+    networks_configured = {row["Network_Name"]:False for row in config}
+    for org in orgs:
+        # Get the new network ID so we can add the vlans
         networks = dashboard.organizations.getOrganizationNetworks(org["id"])
-
         header = True
-        network_found = False
 
         for row in config:
             if header:
@@ -52,10 +44,12 @@ def find_network_and_assign_vlan():
 
             for network in networks:
                 if network["name"] == row["Network_Name"]:
-                    network_found = True
-                    network = network["id"] 
+                    networks_configured[row["Network_Name"]] = True
+                    network = network["id"]
                     if int(row["Number_VLANS"]) > 0:
-                        dashboard.appliance.updateNetworkApplianceVlansSettings(network,vlansEnabled=True)
+                        dashboard.appliance.updateNetworkApplianceVlansSettings(
+                            network,vlansEnabled=True
+                            )
                         network_vlan_actions = []
                         for number in range(int(row["Number_VLANS"])):
                             network_vlan_actions.append({
@@ -69,14 +63,13 @@ def find_network_and_assign_vlan():
                                 }
                             })
 
-                        batch = dashboard.organizations.createOrganizationActionBatch(org["id"],network_vlan_actions,confirmed=True,synchronous=False)
+                        batch = dashboard.organizations.createOrganizationActionBatch(
+                            org["id"],network_vlan_actions,confirmed=True,synchronous=False)
                         check_batch_completion(org["id"],batch["id"])
-            
-            if not network_found:
-                raise ValueError(f"No network with name {row['Network_Name']} found!")
+
+    if not all(networks_configured.values()):
+        message = f"Some networks where not found: {networks_configured}"
+        raise ValueError(message)
 
 if __name__ == "__main__":
     find_network_and_assign_vlan()
-
-
-
