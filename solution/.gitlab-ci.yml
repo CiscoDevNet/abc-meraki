@@ -12,7 +12,7 @@ before_script:
 config:
   stage: build
   except:
-    - master
+    - main
   script:
     - python check_meraki_config.py
 
@@ -21,7 +21,7 @@ check_network_device_existence:
   needs:
     - config
   except:
-    - master
+    - main
   when: delayed
   start_in: 30 seconds
   script:
@@ -30,6 +30,6 @@ check_network_device_existence:
 config_prod:
   stage: deploy
   only:
-    - master
+    - main
   script:
     - python meraki_network_vlan_provision.py -c
