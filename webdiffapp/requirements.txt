@@ -1,8 +1,9 @@
 flask==0.10.1
 nose
-PyGithub==1.25.2
+PyGithub
 pillow
 requests
 binaryornot
 black
 meraki
+itsdangerous==2.0.1
