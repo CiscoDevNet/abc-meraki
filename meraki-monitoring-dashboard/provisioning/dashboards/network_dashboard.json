@@ -89,7 +89,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"meraki_bucket\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement =~ /(.*)[A-Z]1Total/\n  )",
+          "query": "from(bucket: \"meraki_bucket\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement =~ /\\w{4}(?:\\-\\w{4})+1Total/\n  )",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
