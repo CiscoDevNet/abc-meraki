@@ -327,7 +327,7 @@ def get_meraki_configs():
 
 def diff_networks_vlan_settings(orgs):
     for org in <FIX THIS>:
-        if "ECMS" in org["name"]:
+        if <FIX THIS> in org["name"]:
             networks = <FIX THIS: meraki sdk call to get list of networks for specific org>
 
             for network in <FIX THIS>S:
