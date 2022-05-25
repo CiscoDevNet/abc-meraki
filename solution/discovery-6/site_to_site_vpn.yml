@@ -1,0 +1,14 @@
+---
+- name: Site to site VPN
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Set hub mode
+    cisco.meraki.meraki_site_to_site_vpn:
+      auth_key: "{{ api_key }}"
+      state: present
+      org_name: ansible_demo_org
+      net_name: demo_network
+      mode: hub
+    delegate_to: localhost

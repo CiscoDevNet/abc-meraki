@@ -1,0 +1,24 @@
+---
+- name: Content filtering
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Set blocked website category
+    cisco.meraki.meraki_content_filtering:
+      auth_key: '{{api_key}}'
+      org_name: ansible_demo_org
+      net_name: demo_network
+      state: present
+      category_list_size: full list
+      blocked_categories:
+        - "Gambling"
+        - "Games"
+   - name: Set allowed URLs pattern
+    cisco.meraki.meraki_content_filtering:
+      auth_key: '{{api_key}}'
+      org_name: ansible_demo_org
+      net_name: demo_network
+      allowed_urls:
+        - "www.ansible.com/*"
+        - "www.cisco.com/*"        

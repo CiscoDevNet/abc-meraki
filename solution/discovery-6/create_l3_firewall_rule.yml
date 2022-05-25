@@ -1,0 +1,29 @@
+---
+- name: L3 Firewall
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Set two firewall rules
+    meraki_mx_l3_firewall:
+      auth_key: "{{ api_key }}"
+      org_name: ansible_demo_org
+      net_name: demo_network
+      state: present
+      rules:
+        - comment: Block traffic to server - MERAKI BOOTCAMP
+          src_cidr: 10.0.250.0/24
+          src_port: any
+          dest_cidr: 10.0.251.2/32
+          dest_port: any
+          protocol: any
+          policy: deny
+
+        - comment: Allow traffic to group of servers MERAKI BOOTCAMP
+          src_cidr: 10.0.250.0/24
+          src_port: any
+          dest_cidr: 10.0.252.0/24
+          dest_port: 80
+          protocol: tcp
+          policy: allow
+    delegate_to: localhost

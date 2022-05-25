@@ -1,0 +1,17 @@
+---
+- name: Create VLAN
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Create VLAN 5.
+    cisco.meraki.meraki_vlan:
+      auth_key: "{{ api_key }}"
+      org_name: ansible_demo_org
+      net_name: demo_network
+      state: present
+      vlan_id: 5
+      name: VLAN_ANSIBLE
+      subnet: 192.168.5.0/24
+      appliance_ip: 192.168.5.1
+    delegate_to: localhost

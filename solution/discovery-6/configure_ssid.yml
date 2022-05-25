@@ -1,0 +1,24 @@
+---
+- name: Enable and name SSID
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Enable and name SSID
+    meraki_ssid:
+      auth_key: '{{api_key}}'
+      state: present
+      org_name: ansible_demo_org 
+      net_name: demo_network
+      name: Meraki-bootcamp-guest-SSID
+      enabled: true
+    delegate_to: localhost
+  - name: Enable click-through splash page
+    meraki_ssid:
+      auth_key: '{{api_key}}'
+      state: present
+      org_name: ansible_demo_org
+      net_name: demo_network
+      name: Meraki-bootcamp-guest-SSID
+      splash_page: Click-through splash page
+    delegate_to: localhost

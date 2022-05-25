@@ -1,0 +1,12 @@
+---
+- name: Organizations
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Create organization.
+    meraki_organization:
+      auth_key: "{{ api_key }}"
+      org_name: ansible_demo_org
+      state: present
+    delegate_to: localhost

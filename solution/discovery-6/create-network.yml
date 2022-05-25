@@ -1,0 +1,24 @@
+---
+- name: Create Network
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Create network named demo_network in your organization
+      meraki_network:
+        auth_key: "{{ api_key }}"
+        state: present
+        org_name: ansible_demo_org
+        net_name: demo_network
+        type:
+        - switch
+        - appliance
+          timezone: America/Chicago
+          tags: production, chicago
+  - name: Enable VLANS for the new Network
+      meraki_network:
+        auth_key: "{{ api_key }}"
+        state: present
+        org_name: ansible_demo_org
+        net_name: demo_network
+        enable_vlans: yes

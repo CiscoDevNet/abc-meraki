@@ -327,7 +327,7 @@ def get_meraki_configs():
 
 def diff_networks_vlan_settings(orgs):
     for org in orgs:
-        if "ECMS" in org["name"]:
+        if "HTD" in org["name"]:
             networks = dashboard.organizations.getOrganizationNetworks(org["id"])
 
             for network in networks:

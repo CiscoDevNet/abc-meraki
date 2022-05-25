@@ -1,0 +1,22 @@
+---
+- name: L3 Interface
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Create l3 interface
+    cisco.meraki.meraki_ms_l3_interface:
+      auth_key: "{{ api_key }}"
+      state: present
+      serial: YOUR_DEVICE_SERIAL_NUMBER
+      name: Meraki bootcamp SVI
+      subnet: 192.168.3.0/24
+      interface_ip: 192.168.3.2
+      default_gateway: 192.168.3.1
+      multicast_routing: disabled
+      vlan_id: 10
+  - name: Query all l3 interfaces
+    cisco.meraki.meraki_ms_l3_interface:
+      auth_key: "{{ api_key }}"
+      state: query
+      serial: YOUR_DEVICE_SERIAL_NUMBER

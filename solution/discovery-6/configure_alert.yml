@@ -1,0 +1,37 @@
+---
+- name: Alert settings
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Update alert settings
+    cisco.meraki.meraki_alert:
+      auth_key: '{{api_key}}'
+      org_name: ansible_demo_org 
+      net_name: demo_network
+      state: present
+      default_destinations:
+        emails:
+        - "<ENTER-YOUR-EMAIL-ADDRESS>"
+        snmp: no
+        all_admins: no
+      alerts:
+        - alert_type: "gatewayDown"
+          enabled: yes
+          filters:
+            timeout: 30
+          alert_destinations:
+            emails:
+            - "<ENTER-YOUR-EMAIL-ADDRESS>"
+            snmp: no
+            all_admins: no
+        - alert_type: "usageAlert"
+          enabled: yes
+          filters:
+            period: 1000
+            threshold: 104857600
+          alert_destinations:
+            emails:
+            - "<ENTER-YOUR-EMAIL-ADDRESS>"
+            snmp: no
+            all_admins: no

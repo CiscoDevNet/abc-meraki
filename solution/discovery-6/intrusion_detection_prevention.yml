@@ -1,0 +1,15 @@
+---
+- name: Intrusion detection and prevention
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Configure IPS
+    cisco.meraki.meraki_intrusion_prevention:
+      auth_key: '{{api_key}}'
+      state: present
+      org_name: ansible_demo_org
+      net_name: demo_network
+      mode: prevention
+      ids_rulesets: security
+    delegate_to: localhost

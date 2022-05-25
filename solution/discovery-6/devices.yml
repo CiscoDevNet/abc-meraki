@@ -1,0 +1,17 @@
+---
+- name: Network devices
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Get all devices in a network.
+    meraki_device:
+      auth_key: "{{ api_key }}"
+      org_name: Meraki_HTD_EG01
+      net_name: Lab<Lab Number>
+      state: query
+    delegate_to: localhost
+    register: output
+  - name: format output 
+    debug:
+      msg: "{{ output }}"
