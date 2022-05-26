@@ -20,7 +20,7 @@ def get_switch_and_status_packets(start):
 	try: 
 		orgs = dashboard.organizations.getOrganizations()
 		for org in orgs:
-			if "Enterprise ECMS" in org["name"]:
+			if "HTD" in org["name"]:
 				networks = dashboard.organizations.getOrganizationNetworks(org["id"])
 
 				for network in networks:
