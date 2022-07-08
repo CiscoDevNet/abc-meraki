@@ -322,16 +322,23 @@ Close the browser tab or hit Ctrl-C when you're done.
 
 def get_meraki_configs():
     orgs = dashboard.organizations.getOrganizations()
+    # The above sets a variable, orgs, from the Meraki API getOrganizations() function
+    # Next we need to define a function call that uses this variable 
+    # Hint: below you can see the definition for the function, called diff_networks_vlan_settings
     
     <FIX THIS: function call that uses orgs variable above>
 
 def diff_networks_vlan_settings(orgs):
+    # A loop over the orgs in the HTD organization
     for org in <FIX THIS>:
+        # Only If HTD is in the organization name
         if <FIX THIS> in org["name"]:
+            # call the getOrganizationNetworks() passing it the org["id"]
             networks = <FIX THIS: meraki sdk call to get list of networks for specific org>
-
-            for network in <FIX THIS>S:
+            # loop over each network in the captured networks
+            for network in <FIX THIS>:
                 try:
+                    # call appliance.getNetworkApplianceVlansSettings() passing in the network["id"]
                     settings = <FIX THIS: meraki sdk call to get vlan enabled settings for a network>
 
                     with open(f'meraki_settings/actual/vlan_settings/{network["name"]}vlan_settings.json', 'w') as outfile:
