@@ -1,50 +1,50 @@
-version: '3.4'
+---
+version: '3.6'
 
 services:
   gitlab:
     restart: always
-    image: gitlab/gitlab-ce
+    image: gitlab/gitlab-ce:15.9.8-ce.0
     hostname: gitlab
-    # volumes:
-    #   - ./container-data/gitlab/etc/gitlab:/etc/gitlab
-    #   - ./container-data/gitlab/data/gitlab:/var/opt/gitlab
+    ports:
+      - "80:80"
+      - "2222:2222"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://10.0.0.102'
+        gitlab_rails['initial_root_password'] = "C1sco12345"
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        gitlab_rails['initial_shared_runners_registration_token'] = "sandboxrunners"
     volumes:
       - gitlab-config:/etc/gitlab
       - gitlab-data:/var/opt/gitlab
-    ports:
-        - "80:80"
-    environment:
-      - GITLAB_ROOT_PASSWORD=C1sco12345
-      - GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN=sandboxrunners
-      - GITLAB_HOST=http://student-vm
-      - VIRTUAL_HOST=student-vm
-    # extra_hosts:
-    #   devtools-gitlab: 10.10.20.50
+    extra_hosts:
+      - "student-vm:10.0.0.102"
+
   runner1:
     restart: always
-    image: gitlab/gitlab-runner
+    image: gitlab/gitlab-runner:v15.9.1
     environment:
       - REGISTRATION_TOKEN=sandboxrunners
       - RUNNER_NAME=runner1
       - RUNNER_EXECUTOR=docker
-      - CI_SERVER_URL=http://student-vm
-      - CLONE_URL=http://student-vm
+      - CI_SERVER_URL=http://10.0.0.102
+      - CLONE_URL=http://10.0.0.102
       - REGISTER_NON_INTERACTIVE=true
       - DOCKER_IMAGE=alpine
-      - DOCKER_EXTRA_HOSTS=student-vm:10.0.0.102
       - DOCKER_PULL_POLICY=if-not-present
     volumes:
-      #- ./etc/runner:/etc/etc/gitlab-runnerc
       - /var/run/docker.sock:/var/run/docker.sock
     extra_hosts:
       - "student-vm:10.0.0.102"
+
 volumes:
-  gitlab-config: 
-    driver: local 
-  gitlab-data: 
+  gitlab-config:
+    driver: local
+  gitlab-data:
     driver: local
 
-# networks: 
-#  default: 
-#    external: 
-#      name: devtools-network
+networks:
+  default:
+    name: lab-network
+    driver: bridge
