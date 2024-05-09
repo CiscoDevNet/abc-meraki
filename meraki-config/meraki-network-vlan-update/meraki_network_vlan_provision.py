@@ -53,7 +53,7 @@ def find_network_and_assign_vlan():
                         network_vlan_actions = []
                         for number in range(int(row["Number_VLANS"])):
                             network_vlan_actions.append({
-                                "resource": f"/networks/{network}/vlans",
+                                "resource": f"/networks/{network}/appliance/vlans",
                                 "operation": "create",
                                 "body": {
                                     "id": number+2,
