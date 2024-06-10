@@ -1,4 +1,4 @@
-FROM python:3.7-slim
+FROM python:3.10-slim
 
 RUN pip install influxdb_client requests pandas urllib3 meraki
 
